@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.svg" alt="logo" style="zoom:10%;" />
+  <img src="assets/logo.svg" alt="logo" width="300" />
   <h1>tbb framework</h1>
   <a href="https://github.com/PandaFoss/TelegramBashBotsFramework/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/PandaFoss/TelegramBashBotsFramework">
