@@ -42,6 +42,12 @@ parse_args() {
 #==== END FUNCTIONS ===========================================================#
 
 #==== API METHODS =============================================================#
+# Method: getMe
+# API Doc: https://core.telegram.org/bots/api#getme
+getMe() {
+  # Get basic information about the bot
+  curl --silent "${URL}/getMe"
+}
 # Method: sendMessage
 # API Doc: https://core.telegram.org/bots/api#sendmessage
 sendMessage() {
