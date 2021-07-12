@@ -48,6 +48,12 @@ getMe() {
   # Get basic information about the bot
   curl --silent "${URL}/getMe"
 }
+# Method: logOut
+# API Doc: https://core.telegram.org/bots/api#logout
+logOut() {
+  # Log out from the cloud Bot API server
+  curl --silent "${URL}/logOut"
+}
 # Method: sendMessage
 # API Doc: https://core.telegram.org/bots/api#sendmessage
 sendMessage() {
