@@ -29,6 +29,6 @@ jobs:
         uses: ludeeus/action-shellcheck@1.1.0
         with:
           # Paths to ignore when running ShellCheck
-          ignore: ./assets
+          ignore: assets
           # Minimum severity of errors to consider. Options: [error, warning, info, style]
           severity: style
