@@ -137,6 +137,35 @@ sendMessage() {
       --data "disable_web_page_preview=${PREVIEW}"                             \
       --data "parse_mode=${PARSE_MODE}"
 }
+
+# Method: sendDocument
+# API Doc: https://core.telegram.org/bots/api#senddocument
+sendDocument() {
+  # Parse arguments
+  for arg in "$@"; do
+    parse_args "${arg}"
+    case "${KEY}" in
+      chat_id)
+        CHAT_ID="${VALUE}"
+        ;;
+      document)
+        DOCUMENT="${VALUE}"
+        ;;
+      *)
+        unknown_argument "${KEY}"
+        ;;
+    esac
+  done
+  # Check required options
+  [ -z "${CHAT_ID}" ] && echo "Error: Missing chat_id" && exit 3
+  [ -z "${DOCUMENT}" ] && echo "Error: Missing document" && exit 3  
+  # Send message
+  curl "${URL}/sendDocument"                                                   \
+    --max-time "${TIMEOUT}"                                                    \
+      --form chat_id="${CHAT_ID}"                                              \
+      --form document="@${DOCUMENT}"
+}
+
 #==== END API METHODS =========================================================#
 #==== MAIN ====================================================================#
 #==== END MAIN ================================================================#
