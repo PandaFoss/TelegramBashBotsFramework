@@ -160,7 +160,7 @@ sendDocument() {
   [ -z "${CHAT_ID}" ] && echo "Error: Missing chat_id" && exit 3
   [ -z "${DOCUMENT}" ] && echo "Error: Missing document" && exit 3  
   # Send message
-  curl "${URL}/sendDocument"                                                   \
+  curl --silent "${URL}/sendDocument"                                          \
     --max-time "${TIMEOUT}"                                                    \
       --form chat_id="${CHAT_ID}"                                              \
       --form document="@${DOCUMENT}"
