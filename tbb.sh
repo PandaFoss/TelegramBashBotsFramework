@@ -151,6 +151,9 @@ sendDocument() {
       document)
         DOCUMENT="${VALUE}"
         ;;
+      caption)
+        CAPTION="${VALUE}"
+        ;;
       *)
         unknown_argument "${KEY}"
         ;;
@@ -163,7 +166,8 @@ sendDocument() {
   curl --silent "${URL}/sendDocument"                                          \
     --max-time "${TIMEOUT}"                                                    \
       --form chat_id="${CHAT_ID}"                                              \
-      --form document="@${DOCUMENT}"
+      --form document="@${DOCUMENT}"                                           \
+      --form caption="${CAPTION}"
 }
 
 #==== END API METHODS =========================================================#
