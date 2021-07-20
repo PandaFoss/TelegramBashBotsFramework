@@ -20,3 +20,7 @@
 - **Minimal but useful.** While the shell may have its limitations compared to more robust programming languages, with TBB your bot can have the core functionalities with much less effort.
 
 *Note that currently Telegram Bash Bot Framework is a work in progress. Some features may not work as expected or may be missing. Any ideas or suggestions are very welcome.*
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more info.
