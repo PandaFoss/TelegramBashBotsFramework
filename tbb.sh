@@ -170,6 +170,33 @@ sendDocument() {
       --form caption="${CAPTION}"
 }
 
+# Method: sendPhoto
+# API Doc: https://core.telegram.org/bots/api#sendphoto
+sendPhoto() {
+  # Parse arguments
+  for arg in "$@"; do
+    parse_args "${arg}"
+    case "${KEY}" in
+      chat_id)
+        CHAT_ID="${VALUE}"
+        ;;
+      photo)
+        PHOTO="${VALUE}"
+        ;;
+      *)
+        unknown_argument "${KEY}"
+        ;;
+    esac
+  done
+  # Check required options
+  [ -z "${CHAT_ID}" ] && echo "Error: Missing chat_id" && exit 3
+  [ -z "${PHOTO}" ] && echo "Error: Missing photo" && exit 3  
+  # Send message
+  curl --silent "${URL}/sendPhoto"                                             \
+    --max-time "${TIMEOUT}"                                                    \
+      --form chat_id="${CHAT_ID}"                                              \
+      --form photo="@${PHOTO}"
+}
 #==== END API METHODS =========================================================#
 #==== MAIN ====================================================================#
 #==== END MAIN ================================================================#
