@@ -197,6 +197,34 @@ sendPhoto() {
       --form chat_id="${CHAT_ID}"                                              \
       --form photo="@${PHOTO}"
 }
+
+# Method: sendVideo
+# API Doc: https://core.telegram.org/bots/api#sendvideo
+sendVideo() {
+  # Parse arguments
+  for arg in "$@"; do
+    parse_args "${arg}"
+    case "${KEY}" in
+      chat_id)
+        CHAT_ID="${VALUE}"
+        ;;
+      video)
+        VIDEO="${VALUE}"
+        ;;
+      *)
+        unknown_argument "${KEY}"
+        ;;
+    esac
+  done
+  # Check required options
+  [ -z "${CHAT_ID}" ] && echo "Error: Missing chat_id" && exit 3
+  [ -z "${VIDEO}" ] && echo "Error: Missing video" && exit 3  
+  # Send message
+  curl --silent "${URL}/sendVideo"                                             \
+    --max-time "${TIMEOUT}"                                                    \
+      --form chat_id="${CHAT_ID}"                                              \
+      --form video="@${VIDEO}"
+}
 #==== END API METHODS =========================================================#
 #==== MAIN ====================================================================#
 #==== END MAIN ================================================================#
