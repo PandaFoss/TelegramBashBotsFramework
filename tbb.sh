@@ -24,7 +24,7 @@ readonly USER_CONFIG="${HOME}/.tbbrc"
 # System-wide configuration file
 readonly SYSTEM_CONFIG="/etc/tbb/tbb.rc"
 # Maximum time in seconds that you allow the whole operation to take
-readonly TIMEOUT=20
+readonly CURL_TIMEOUT=20
 # shellcheck source=/etc/tbb/tbb.rc disable=SC1091
 [ -f "${SYSTEM_CONFIG}" ] && . "${SYSTEM_CONFIG}"
 # shellcheck source=${HOME}/.tbbrc disable=SC1091
@@ -51,6 +51,42 @@ unknown_argument() {
 #==== END FUNCTIONS ===========================================================#
 
 #==== API METHODS =============================================================#
+
+# Method: getUpdates
+# API Doc: https://core.telegram.org/bots/api#getupdates
+getUpdates() {
+  # Parse arguments
+  for arg in "$@"; do
+    parse_args "${arg}"
+    case "${KEY}" in
+      offset)
+        OFFSET="${VALUE}"
+        ;;
+      limit)
+        LIMIT="${VALUE}"
+        ;;
+      timeout)
+        TIMEOUT="${VALUE}"
+        ;;
+      allowed_updates)
+        ALLOWED_UPDATES="${VALUE}"
+        ;;
+      *)
+        unknown_argument "${KEY}"
+        ;;
+    esac
+  done
+  # Set default values (from API Documentation)
+  [ -z "${LIMIT}" ] && LIMIT=100
+  [ -z "${TIMEOUT}" ] && TIMEOUT=0
+  # Get updates
+  curl --silent "${URL}/getUpdates"                                            \
+    --max-time "${CURL_TIMEOUT}"                                               \
+      --data "offset=${OFFSET}"                                                \
+      --data "limit=${LIMIT}"                                                  \
+      --data "timeout=${TIMEOUT}"                                              \
+      --data "allowed_updates=${ALLOWED_UPDATES}"
+}
 
 # Method: getMe
 # API Doc: https://core.telegram.org/bots/api#getme
@@ -95,7 +131,7 @@ forwardMessage() {
   [ -z "${MESSAGE_ID}" ] && echo "Error: Missing message_id" && exit 3
   # Forward message
   curl --silent "${URL}/forwardMessage"                                        \
-    --max-time "${TIMEOUT}"                                                    \
+    --max-time "${CURL_TIMEOUT}"                                               \
       --data "chat_id=${CHAT_ID}"                                              \
       --data "from_chat_id=${FROM_CHAT_ID}"                                    \
       --data "disable_notification=${DISABLE_NOTIFICATION}"                    \
@@ -131,7 +167,7 @@ sendMessage() {
   [ -z "${TEXT}" ] && echo "Error: Missing text" && exit 3
   # Send message
   curl --silent "${URL}/sendMessage"                                           \
-    --max-time "${TIMEOUT}"                                                    \
+    --max-time "${CURL_TIMEOUT}"                                               \
     --data-urlencode "text=${TEXT}"                                            \
       --data "chat_id=${CHAT_ID}"                                              \
       --data "disable_web_page_preview=${PREVIEW}"                             \
@@ -161,7 +197,7 @@ sendPhoto() {
   [ -z "${PHOTO}" ] && echo "Error: Missing photo" && exit 3  
   # Send message
   curl --silent "${URL}/sendPhoto"                                             \
-    --max-time "${TIMEOUT}"                                                    \
+    --max-time "${CURL_TIMEOUT}"                                               \
       --form chat_id="${CHAT_ID}"                                              \
       --form photo="@${PHOTO}"
 }
@@ -192,7 +228,7 @@ sendDocument() {
   [ -z "${DOCUMENT}" ] && echo "Error: Missing document" && exit 3  
   # Send message
   curl --silent "${URL}/sendDocument"                                          \
-    --max-time "${TIMEOUT}"                                                    \
+    --max-time "${CURL_TIMEOUT}"                                               \
       --form chat_id="${CHAT_ID}"                                              \
       --form document="@${DOCUMENT}"                                           \
       --form caption="${CAPTION}"
@@ -221,7 +257,7 @@ sendVideo() {
   [ -z "${VIDEO}" ] && echo "Error: Missing video" && exit 3  
   # Send message
   curl --silent "${URL}/sendVideo"                                             \
-    --max-time "${TIMEOUT}"                                                    \
+    --max-time "${CURL_TIMEOUT}"                                               \
       --form chat_id="${CHAT_ID}"                                              \
       --form video="@${VIDEO}"
 }
